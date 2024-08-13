@@ -1,0 +1,176 @@
+
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descripción de la página">
+    <meta name="keywords" content="palabras clave, separadas, por, comas">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossorigin="anonymous">
+    <meta name="author" content="Tu Nombre">
+    <title>Movimiento Parabolico</title>
+    <link rel="icon" href="favicon.ico" type="image/x-icon"> <!-- Icono de la página -->
+
+    <style>
+        *{
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background-color: #f4f4f4;
+            width: 100%;
+            height: 100vh;
+            display: flex;
+        }
+
+        section {
+            display: flex;
+            width: 50%;
+            height: 100%;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            padding: 3rem 0rem;
+        }
+
+        .azul {
+            background-color: #007bff83;
+        }
+
+        .blanco {
+            color: #fdfdfd
+        }
+
+        div {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        h1 {
+            text-align: center;
+            color: #333;
+            font-size: 40px;
+            font-weight: 600;
+        }
+
+        .subir {
+            display: flex;
+            gap: 5px;
+            flex-direction: column;
+            align-items: center;
+            text-align: center;
+            padding: 2rem 3rem;
+            margin-bottom: 20px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 5px;
+            color: #666;
+        }
+
+        table {
+            width: 80%;
+        }
+
+        input[type="number"] {
+            width: 80%;
+            padding: 5px;
+            margin-bottom: 10px;
+            border: 1px solid #ccc;
+            border-radius: 3px;
+            box-sizing: border-box;
+        }
+
+        button {
+            margin-top: 15px;
+            padding: 10px 20px;
+            background-color: #007bff;
+            color: #fff;
+            border: none;
+            border-radius: 3px;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        .btn {
+            margin: 0;
+        }
+
+        button:hover {
+            background-color: #0056b3;
+        }
+        th,td {
+            border: 1px solid #ddd;
+            padding: 8px;
+            text-align: center;
+        }
+        td {
+            background-color: #ffffffcc;
+        }
+        th {
+            background-color: #4a6888;
+            color: #fff;
+        }
+
+        .export {
+            margin-top: -2rem;
+        }
+    </style>
+
+</head>
+<body>
+    <section class="">
+        <h1>Simulador de Movimiento Parabólico</h1>
+        <form class="subir" action="/submit" method="post" enctype="multipart/form-data">
+            <label for="velocidad">Velocidad inicial (m/s):</label>
+            <input type="number" id="velocidad_inicial" class="velocidad_inicial" name="velocidad_inicial" required>
+            <label for="angulo">Ángulo de lanzamiento (grados):</label>
+            <input type="number" id="angulo" class="angulo" name="angulo" required>
+            <button type="submit">Simular movimiento parabólico</button>
+        </form>
+            <form action="/exportar" class="export " method="post" enctype="multipart/form-data"><button type="submit" class="btn btn-success">Exportar CSV</button></form>
+        
+    </section>
+    <section class="gap-3 azul">
+        <div class="overflow-auto w-100">
+            <h1 class="blanco">Historial de Simulaciones</h1>
+            <table>
+                <thead>
+                    <tr>
+                        <th>N°</th>
+                        <th>Angulo</th>
+                        <th>V0</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for i in range(df.shape[0]) %}
+                    <tr>
+                        <td>{{ df.iloc[i]['id']  }}</td>
+                        <td>{{ df.iloc[i]['angulo']  }}°</td>
+                        <td>{{ df.iloc[i]['v0'] }} m/s</td>
+                        <td>
+                            <form action="/submit" method="post" enctype="multipart/form-data">
+                                <input name="angulo" type="text" class="d-none" value="{{ df.iloc[i]['angulo']  }}">
+                                <input name="velocidad_inicial" type="text" class="d-none" value="{{ df.iloc[i]['v0'] }}">
+                                <button type="submit" class="btn btn-success">Calcular</button>
+                            </form>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-YvpcrYf0tY3lHB60NNkmXc5s9fDVZLESaAA55NDzOxhy9GkcIdslK1eN7N6jIeHz" crossorigin="anonymous"></script>
+</body>
+   
+<!-- Scripts -->
+<script src="scripts.js"></script> <!-- Vincula tu archivo de JavaScript -->
+</body>
+</html>
